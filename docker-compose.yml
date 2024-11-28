@@ -1,20 +1,60 @@
-version: "3.9"
+version: '3.8'
+
 services:
-  streamlit:
+  authentik:
+    image: ghcr.io/goauthentik/server:2023.10.3
+    container_name: authentik
+    command: server
+    environment:
+      AUTHENTIK_REDIS__HOST: redis
+      AUTHENTIK_POSTGRESQL__HOST: authentik_db
+      AUTHENTIK_POSTGRESQL__USER: authentik
+      AUTHENTIK_POSTGRESQL__NAME: authentik
+      AUTHENTIK_POSTGRESQL__PASSWORD: authentik
+    volumes:
+      - authentik:/data/
+    ports:
+      - "9000:9000"
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    volumes:
+      - redis:/data/
+
+  authentik_db:
+    image: postgres:13
+    container_name: authentik_db
+    environment:
+      POSTGRES_DB: authentik
+      POSTGRES_USER: authentik
+      POSTGRES_PASSWORD: authentik
+    volumes:
+      - authentik_db:/var/lib/postgresql/data/
+
+  app_db:
+    image: postgres:13
+    container_name: app_db
+    environment:
+      POSTGRES_DB: your_postgres_db
+      POSTGRES_USER: your_postgres_user
+      POSTGRES_PASSWORD: your_postgres_password
+    volumes:
+      - app_db:/var/lib/postgresql/data/
+
+  app:
     build: .
+    container_name: app
     ports:
       - "8501:8501"
-    volumes:
-      - ./:/app
+    env_file:
+      - .env
     depends_on:
-      - influxdb
+      - authentik
+      - app_db
 
-  influxdb:
-    image: influxdb:2.6
-    ports:
-      - "8086:8086"
-    environment:
-      - INFLUXDB_DEFAULT_USER=admin
-      - INFLUXDB_DEFAULT_PASSWORD=password #Change this to a strong password
-    volumes:
-      - ./influxdb_data:/var/lib/influxdb
+volumes:
+  authentik:
+  redis:
+  authentik_db:
+  app_db:

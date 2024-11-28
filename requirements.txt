@@ -1,7 +1,5 @@
 streamlit
 pandas
-PyPDF2
+requests
 influxdb-client
-plotly
-camelot-py[cv]
-python-dotenv
+psycopg2-binary

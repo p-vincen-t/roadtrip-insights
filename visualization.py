@@ -3,7 +3,7 @@ import pandas as pd
 import json
 
 # Load sample data
-with open('sample_data.json') as f:
+with open('data/sample_data.json') as f:
     sample_data = json.load(f)
 
 def create_financial_chart(data=None):
