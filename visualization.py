@@ -1,38 +1,169 @@
 import plotly.express as px
 import pandas as pd
 
-def create_financial_chart(daily_data: list):
-    df = pd.DataFrame(daily_data, columns=['date', 'category', 'amount'])
-    # Group data by category and sum amounts
-    category_sums = df.groupby('category')['amount'].sum().reset_index()
-    fig = px.bar(category_sums, x='category', y='amount', title='Daily Income and Expenses by Category',
-                 color='category', color_discrete_sequence=px.colors.qualitative.Pastel) #Use Pastel color palette
+def create_financial_chart(data):
+    """
+    Create a financial chart using the provided data.
+
+    Parameters:
+    - data (list): A list of tuples containing date, category, and amount.
+
+    Returns:
+    - fig: A Plotly figure object.
+    """
+    df = pd.DataFrame(data, columns=["Date", "Category", "Amount"])
+    df["Date"] = pd.to_datetime(df["Date"])
+    df.set_index("Date", inplace=True)
+
+    # Resample data to get daily totals
+    daily_data = df.resample("D").sum()
+
+    # Create a bar chart for daily income and expenses
+    fig = px.bar(
+        daily_data,
+        x=daily_data.index,
+        y="Amount",
+        title="Daily Income and Expenses",
+        labels={"Amount": "Amount (USD)", "index": "Date"},
+        color_discrete_sequence=["#1f77b4"]  # Set bar color to blue
+    )
+
+    # Customize the layout
+    fig.update_layout(
+        xaxis_title="Date",
+        yaxis_title="Amount (USD)",
+        xaxis=dict(
+            tickformat="%Y-%m-%d",  # Format x-axis labels as date
+            dtick="D1"  # Set x-axis ticks to daily intervals
+        ),
+        yaxis=dict(
+            tickformat="$",  # Format y-axis labels with currency symbol
+            tickprefix="$"
+        ),
+        title=dict(
+            x=0.5,  # Center the title
+            xanchor="center"
+        )
+    )
+
     return fig
 
-def create_trip_timeline(trip_data: list):
-    df = pd.DataFrame(trip_data)
-    #Handle potential variations in column names
-    x_start_col = next((col for col in df.columns if 'Start Time' in col), None)
-    x_end_col = next((col for col in df.columns if 'End Time' in col), None)
-    y_col = next((col for col in df.columns if 'Start Location' in col), None)
+def create_trip_timeline(data):
+    """
+    Create a timeline visualization for trip data.
 
-    if x_start_col and x_end_col and y_col:
-        fig = px.timeline(df, x_start=x_start_col, x_end=x_end_col, y=y_col, title='Trip Timeline')
-        return fig
-    else:
+    Parameters:
+    - data (list): A list of dictionaries containing trip data.
+
+    Returns:
+    - fig: A Plotly figure object.
+    """
+    if not data:
         return None
 
-def create_trip_summary(trip_data: list):
-    df = pd.DataFrame(trip_data)
-    return df
+    df = pd.DataFrame(data)
+    df["Start Time"] = pd.to_datetime(df["Start Time"])
+    df["End Time"] = pd.to_datetime(df["End Time"])
 
-def create_daily_trip_mileage_chart(daily_trip_data):
-    if daily_trip_data.empty:
+    # Create a timeline chart
+    fig = px.timeline(
+        df,
+        x_start="Start Time",
+        x_end="End Time",
+        y="Trip State",
+        color="Trip State",
+        title="Trip Timeline",
+        labels={"Trip State": "Trip State"}
+    )
+
+    # Customize the layout
+    fig.update_layout(
+        xaxis_title="Time",
+        yaxis_title="Trip State",
+        title=dict(
+            x=0.5,  # Center the title
+            xanchor="center"
+        )
+    )
+
+    return fig
+
+def create_trip_summary(data):
+    """
+    Create a summary table for trip data.
+
+    Parameters:
+    - data (list): A list of dictionaries containing trip data.
+
+    Returns:
+    - df: A Pandas DataFrame containing the trip summary.
+    """
+    if not data:
+        return pd.DataFrame()
+
+    df = pd.DataFrame(data)
+    df["Start Time"] = pd.to_datetime(df["Start Time"])
+    df["End Time"] = pd.to_datetime(df["End Time"])
+    df["Duration"] = pd.to_timedelta(df["Duration"])
+
+    # Calculate additional summary metrics
+    df["Trip Duration (hours)"] = df["Duration"].dt.total_seconds() / 3600.0
+    df["Average Speed (km/h)"] = df["Mileage (km)"] / df["Trip Duration (hours)"]
+
+    # Select relevant columns for the summary
+    summary_columns = [
+        "Vehicle Plate Number", "Trip State", "Start Time", "End Time",
+        "Mileage (km)", "Trip Duration (hours)", "Average Speed (km/h)",
+        "Start Location", "End Location"
+    ]
+
+    return df[summary_columns]
+
+def create_daily_trip_mileage_chart(data):
+    """
+    Create a chart showing daily trip count vs. mileage.
+
+    Parameters:
+    - data (DataFrame): A DataFrame containing trip data.
+
+    Returns:
+    - fig: A Plotly figure object.
+    """
+    if data is None or data.empty:
         return None
 
-    daily_trip_data['date'] = pd.to_datetime(daily_trip_data['date']).dt.date
-    daily_summary = daily_trip_data.groupby('date').agg({'Mileage (km)': 'sum', 'Vehicle Plate Number': 'count'}).reset_index()
-    daily_summary = daily_summary.rename(columns={'Vehicle Plate Number': 'Trip Count'})
-    fig = px.scatter(daily_summary, x='Trip Count', y='Mileage (km)', title='Daily Trip Count vs. Total Mileage',
-                     hover_data=['date'])
+    # Ensure the data is in the correct format
+    data["_time"] = pd.to_datetime(data["_time"])
+    data.set_index("_time", inplace=True)
+
+    # Resample data to get daily totals
+    daily_data = data.resample("D").sum()
+
+    # Create a bar chart for daily trip count vs. mileage
+    fig = px.bar(
+        daily_data,
+        x=daily_data.index,
+        y=["Trip Count", "Mileage (km)"],
+        title="Daily Trip Count vs. Mileage",
+        labels={"index": "Date", "value": "Count/Mileage"},
+        barmode="group"
+    )
+
+    # Customize the layout
+    fig.update_layout(
+        xaxis_title="Date",
+        yaxis_title="Count/Mileage",
+        xaxis=dict(
+            tickformat="%Y-%m-%d",  # Format x-axis labels as date
+            dtick="D1"  # Set x-axis ticks to daily intervals
+        ),
+        yaxis=dict(
+            tickformat=",.2f"  # Format y-axis labels with thousand separators and 2 decimal places
+        ),
+        title=dict(
+            x=0.5,  # Center the title
+            xanchor="center"
+        )
+    )
+
     return fig

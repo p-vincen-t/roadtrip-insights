@@ -5,20 +5,25 @@ from dotenv import load_dotenv
 import pandas as pd
 import logging
 
+# Load environment variables from .env file
 load_dotenv()
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s') #Increased logging level
+# Configure logging
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class DBManager:
     def __init__(self):
+        # Get database connection details from environment variables
         self.sqlite_db = os.getenv("SQLITE_DB")
         self.influx_url = os.getenv("INFLUX_URL")
         self.influx_token = os.getenv("INFLUX_TOKEN")
         self.influx_org = os.getenv("INFLUX_ORG")
         self.influx_bucket = os.getenv("INFLUX_BUCKET")
 
+        # Check if all required environment variables are set
         if not all([self.sqlite_db, self.influx_url, self.influx_token, self.influx_org, self.influx_bucket]):
             raise ValueError("Missing credentials in .env file.")
 
+        # Establish InfluxDB connection
         try:
             self.influx_client = InfluxDBClient(url=self.influx_url, token=self.influx_token, org=self.influx_org)
             logging.info("Successfully connected to InfluxDB.")
@@ -26,9 +31,11 @@ class DBManager:
             logging.error(f"Error connecting to InfluxDB: {e}")
             raise
 
+        # Create SQLite database
         self.create_sqlite_db()
 
     def create_sqlite_db(self):
+        # Create SQLite database and table if they don't exist
         conn = sqlite3.connect(self.sqlite_db)
         cursor = conn.cursor()
         cursor.execute('''
@@ -43,6 +50,7 @@ class DBManager:
         conn.close()
 
     def insert_daily_data(self, date, category, amount):
+        # Insert daily financial data into SQLite database
         conn = sqlite3.connect(self.sqlite_db)
         cursor = conn.cursor()
         cursor.execute("INSERT INTO daily_data (date, category, amount) VALUES (?, ?, ?)", (date, category, amount))
@@ -50,6 +58,7 @@ class DBManager:
         conn.close()
 
     def get_daily_data(self):
+        # Retrieve daily financial data from SQLite database
         conn = sqlite3.connect(self.sqlite_db)
         cursor = conn.cursor()
         cursor.execute("SELECT date, category, amount FROM daily_data")
@@ -58,13 +67,16 @@ class DBManager:
         return data
 
     def write_influx_data(self, data):
+        # Write trip data to InfluxDB
         write_api = self.influx_client.write_api()
         for record in data:
+            # Remove escape characters from data before writing to InfluxDB
             cleaned_record = {k: v.replace('/', '') if isinstance(v, str) else v for k, v in record.items()}
             point = Point("trip").tag("vehicle", "BM125").fields(cleaned_record)
             write_api.write(bucket=self.influx_bucket, record=point)
 
     def clear_influxdb_data(self):
+        # Clear all data from the specified InfluxDB bucket
         query_api = self.influx_client.query_api()
         query = f'DELETE FROM "{self.influx_bucket}"'
         try:
@@ -75,9 +87,11 @@ class DBManager:
             return None
 
     def close_influx_connection(self):
+        # Close the InfluxDB connection
         self.influx_client.close()
 
     def get_daily_trip_data(self):
+        # Retrieve daily trip data from InfluxDB
         query_api = self.influx_client.query_api()
         query = f'''
             from(bucket:"{self.influx_bucket}")
