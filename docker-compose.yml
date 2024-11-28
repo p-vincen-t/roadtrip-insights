@@ -1,0 +1,20 @@
+version: "3.9"
+services:
+  streamlit:
+    build: .
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./:/app
+    depends_on:
+      - influxdb
+
+  influxdb:
+    image: influxdb:2.6
+    ports:
+      - "8086:8086"
+    environment:
+      - INFLUXDB_DEFAULT_USER=admin
+      - INFLUXDB_DEFAULT_PASSWORD=password #Change this to a strong password
+    volumes:
+      - ./influxdb_data:/var/lib/influxdb

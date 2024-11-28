@@ -1,0 +1,7 @@
+streamlit
+pandas
+PyPDF2
+influxdb-client
+plotly
+camelot-py[cv]
+python-dotenv
