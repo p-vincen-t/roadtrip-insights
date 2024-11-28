@@ -1,0 +1,141 @@
+{
+  "financial_data": [
+    ["2023-10-01", "Vehicle1", "Revenue", 500],
+    ["2023-10-01", "Vehicle1", "Fuel costs", 100],
+    ["2023-10-02", "Vehicle1", "Maintenance", 150],
+    ["2023-10-03", "Vehicle1", "Tolls", 50],
+    ["2023-10-04", "Vehicle1", "Driver Allowance", 30],
+    ["2023-10-05", "Vehicle1", "Insurance", 200],
+    ["2023-10-06", "Vehicle1", "Permits", 75]
+  ],
+  "trip_data": [
+    {
+      "Vehicle Plate Number": "ABC123",
+      "Trip State": "Completed",
+      "Start Time": "2023-10-01T08:00:00",
+      "End Time": "2023-10-01T10:00:00",
+      "Mileage (km)": 100,
+      "Duration": "2 hours",
+      "Start Location": "Location A",
+      "End Location": "Location B",
+      "Fuel (l)": 20,
+      "Start Coordinates": "1.240553N,36.890942E",
+      "End Coordinates": "1.240553S,36.890942W"
+    },
+    {
+      "Vehicle Plate Number": "XYZ789",
+      "Trip State": "Completed",
+      "Start Time": "2023-10-02T09:00:00",
+      "End Time": "2023-10-02T11:00:00",
+      "Mileage (km)": 150,
+      "Duration": "2 hours",
+      "Start Location": "Location C",
+      "End Location": "Location D",
+      "Fuel (l)": 25,
+      "Start Coordinates": "1.240553N,36.890942E",
+      "End Coordinates": "1.240553S,36.890942W"
+    },
+    {
+      "Vehicle Plate Number": "LMN456",
+      "Trip State": "Completed",
+      "Start Time": "2023-10-03T12:00:00",
+      "End Time": "2023-10-03T13:30:00",
+      "Mileage (km)": 120,
+      "Duration": "1.5 hours",
+      "Start Location": "Location E",
+      "End Location": "Location F",
+      "Fuel (l)": 22,
+      "Start Coordinates": "1.240553N,36.890942E",
+      "End Coordinates": "1.240553S,36.890942W"
+    },
+    {
+      "Vehicle Plate Number": "OPQ369",
+      "Trip State": "Completed",
+      "Start Time": "2023-10-04T15:00:00",
+      "End Time": "2023-10-04T18:00:00",
+      "Mileage (km)": 180,
+      "Duration": "3 hours",
+      "Start Location": "Location G",
+      "End Location": "Location H",
+      "Fuel (l)": 30,
+      "Start Coordinates": "1.240553N,36.890942E",
+      "End Coordinates": "1.240553S,36.890942W"
+    },
+    {
+      "Vehicle Plate Number": "RST789",
+      "Trip State": "Completed",
+      "Start Time": "2023-10-05T08:00:00",
+      "End Time": "2023-10-05T10:30:00",
+      "Mileage (km)": 110,
+      "Duration": "2.5 hours",
+      "Start Location": "Location I",
+      "End Location": "Location J",
+      "Fuel (l)": 20,
+      "Start Coordinates": "1.240553N,36.890942E",
+      "End Coordinates": "1.240553S,36.890942W"
+    },
+    {
+      "Vehicle Plate Number": "UVW123",
+      "Trip State": "Completed",
+      "Start Time": "2023-10-06T12:00:00",
+      "End Time": "2023-10-06T13:30:00",
+      "Mileage (km)": 90,
+      "Duration": "1.5 hours",
+      "Start Location": "Location K",
+      "End Location": "Location L",
+      "Fuel (l)": 15,
+      "Start Coordinates": "1.240553N,36.890942E",
+      "End Coordinates": "1.240553S,36.890942W"
+    },
+    {
+      "Vehicle Plate Number": "WXY345",
+      "Trip State": "Completed",
+      "Start Time": "2023-10-07T09:00:00",
+      "End Time": "2023-10-07T11:00:00",
+      "Mileage (km)": 130,
+      "Duration": "2 hours",
+      "Start Location": "Location M",
+      "End Location": "Location N",
+      "Fuel (l)": 22,
+      "Start Coordinates": "1.240553N,36.890942E",
+      "End Coordinates": "1.240553S,36.890942W"
+    },
+    {
+      "Vehicle Plate Number": "ZAB678",
+      "Trip State": "Completed",
+      "Start Time": "2023-10-08T12:00:00",
+      "End Time": "2023-10-08T14:30:00",
+      "Mileage (km)": 140,
+      "Duration": "2.5 hours",
+      "Start Location": "Location O",
+      "End Location": "Location P",
+      "Fuel (l)": 25,
+      "Start Coordinates": "1.240553N,36.890942E",
+      "End Coordinates": "1.240553S,36.890942W"
+    },
+    {
+      "Vehicle Plate Number": "YZA890",
+      "Trip State": "Completed",
+      "Start Time": "2023-10-09T15:00:00",
+      "End Time": "2023-10-09T18:00:00",
+      "Mileage (km)": 160,
+      "Duration": "3 hours",
+      "Start Location": "Location Q",
+      "End Location": "Location R",
+      "Fuel (l)": 30,
+      "Start Coordinates": "1.240553N,36.890942E",
+      "End Coordinates": "1.240553S,36.890942W"
+    }
+  ],
+  "vehicles": [
+    {"ID": 1, "Plate Number": "ABC123", "Model": "Toyota Corolla"},
+    {"ID": 2, "Plate Number": "XYZ789", "Model": "Honda Civic"},
+    {"ID": 3, "Plate Number": "LMN456", "Model": "BMW X3"},
+    {"ID": 4, "Plate Number": "OPQ369", "Model": "Audi A4"},
+    {"ID": 5, "Plate Number": "RST789", "Model": "Mercedes-Benz C Class"},
+    {"ID": 6, "Plate Number": "UVW123", "Model": "Volkswagen GTI"},
+    {"ID": 7, "Plate Number": "WXY345", "Model": "Porsche 911"},
+    {"ID": 8, "Plate Number": "ZAB678", "Model": "Ferrari F430"},
+    {"ID": 9, "Plate Number": "YZA890", "Model": "Lamborghini Aventador"}
+  ]
+}
