@@ -4,9 +4,9 @@ This Streamlit application manages and analyzes vehicle operational data, includ
 
 ## Features
 
-- **Daily Income & Expense Management:** Input and track daily income and expenses categorized by type (Revenue, Fuel, Repair, Spare Parts). Data is stored in an SQLite database.  ![Daily Expenses](financials.png)
+- **Daily Income & Expense Management:** Input and track daily income and expenses categorized by type (Revenue, Fuel, Repair, Spare Parts). Data is stored in an SQLite database.  ![Daily Expenses](images/financials.png)
 - **Trip Data Handling:** Upload trip data from CSV or PDF files.  Data is stored in an InfluxDB time-series database.
-- **Dashboard & Visualization:** Interactive charts and tables visualize financial data and trip reports (daily income/expenses, profit/loss, total distance, average trip duration, trip timeline). ![Trip Timeline](upload.png)
+- **Dashboard & Visualization:** Interactive charts and tables visualize financial data and trip reports (daily income/expenses, profit/loss, total distance, average trip duration, trip timeline). ![Trip Timeline](images/upload.png)
 - **Data Clearing:** Clear all trip data from InfluxDB.
 
 ## Setup
