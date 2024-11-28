@@ -57,5 +57,6 @@ coverage.xml
 *.swo
 .DS_Store
 temp_file
+temp.pdf
 influxdb_data/
 vehicle_data.db
