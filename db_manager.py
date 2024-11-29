@@ -170,3 +170,5 @@ class DBManager:
 
     def close_influx_connection(self):
         pass
+
+

@@ -108,3 +108,18 @@ Give our repository a star to stay informed about the latest features and update
 [![Star the Repo](https://your_website.com/star.gif)](https://github.com/your_username/RoadTrip-Insights)
 
 ---
+
+## LangChain Integration
+The project utilizes LangChain for PDF extraction. The `pdf_parser.py` script has been updated to use a LangChain agent to extract the required trip data from PDF files as a list of records.
+
+### Recommended Models
+For optimal performance, it is recommended to use the following OpenAI models:
+- `gpt-3.5-turbo`: A powerful model suitable for general text extraction tasks.
+- `gpt-4`: An advanced model with enhanced capabilities for complex text extraction and understanding.
+
+### Configuration
+Ensure that the following environment variables are set in the `.env` file:
+```
+OPENAI_API_KEY=your_openai_api_key
+OPENAI_MODEL=your_openai_model
+OPENAI_API_URL=your_openai_api_url
