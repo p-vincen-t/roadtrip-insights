@@ -1,11 +1,43 @@
-# RoadTrip Insights - Vehicle Operational Data Management Application
+<!-- <p align="center">
+  <a href="https://www.kestra.io">
+    <img src="images/logo.png" alt="RoadTrip Insights Logo" />
+  </a>
+</p> -->
 
-This Streamlit application manages and analyzes vehicle operational data, including daily income/expenses and trip details. The purpose of the application is to provide a comprehensive dashboard for tracking and visualizing financial and trip data, helping users make informed decisions based on real-time data.
+<h1 align="center" style="border-bottom: none">
+    RoadTrip Insights - Vehicle Operational Data Management Application
+</h1>
 
-## Features
+<div align="center">
+  <a href="https://github.com/your_username/RoadTrip-Insights/releases"><img src="https://img.shields.io/github/tag-pre/your_username/RoadTrip-Insights.svg?color=blueviolet" alt="Last Version" /></a>
+  <a href="https://github.com/your_username/RoadTrip-Insights/blob/develop/LICENSE"><img src="https://img.shields.io/github/license/your_username/RoadTrip-Insights?color=blueviolet" alt="License" /></a>
+  <a href="https://github.com/your_username/RoadTrip-Insights/stargazers"><img src="https://img.shields.io/github/stars/your_username/RoadTrip-Insights?color=blueviolet&logo=github" alt="Github star" /></a> <br>
+  <a href="https://your_website.com"><img src="https://img.shields.io/badge/Website-your_website.com-192A4E?color=blueviolet" alt="RoadTrip Insights Website"></a>
+  <a href="https://your_slack.com"><img src="https://img.shields.io/badge/Slack-Join%20Community-blueviolet?logo=slack" alt="Slack"></a>
+</div>
 
-- **Daily Income & Expense Management:** Input and track daily income and expenses categorized by type (Revenue, Fuel, Repair, Spare Parts). Data is stored in a PostgreSQL database. ![Daily Expenses](images/financials.png)
-- **Trip Data Handling:** Upload trip data from CSV or PDF files. Data is stored in an InfluxDB time-series database. ![Trip Timeline](images/upload.png)
+<br />
+
+<p align="center">
+    <a href="https://x.com/your_twitter"><img height="25" src="https://your_website.com/twitter.svg" alt="X(formerly Twitter)" /></a> &nbsp;
+    <a href="https://www.linkedin.com/company/your_linkedin/"><img height="25" src="https://your_website.com/linkedin.svg" alt="linkedin" /></a> &nbsp;
+    <a href="https://www.youtube.com/@your_youtube"><img height="25" src="https://your_website.com/youtube.svg" alt="youtube" /></a> &nbsp;
+</p>
+
+<p align="center">
+    <a href="https://your_website.com/get-started-video" target="_blank">
+        <img src="https://your_website.com/startvideo.png" alt="Get started in 4 minutes with RoadTrip Insights" width="640px" />
+    </a>
+</p>
+<p align="center" style="color:grey;"><i>Click on the image to learn how to get started with RoadTrip Insights in 4 minutes.</i></p>
+
+## 🌟 What is RoadTrip Insights?
+
+RoadTrip Insights is a Streamlit application designed to manage and analyze vehicle operational data, including daily income/expenses and trip details. The purpose of the application is to provide a comprehensive dashboard for tracking and visualizing financial and trip data, helping users make informed decisions based on real-time data.
+
+**Key Features:**
+- **Daily Income & Expense Management:** Input and track daily income and expenses categorized by type (Revenue, Fuel, Repair, Spare Parts). Data is stored in a PostgreSQL database.
+- **Trip Data Handling:** Upload trip data from CSV or PDF files. Data is stored in an InfluxDB time-series database.
 - **Dashboard & Visualization:** Interactive charts and tables visualize financial data and trip reports (daily income/expenses, profit/loss, total distance, average trip duration, trip timeline).
 - **Data Clearing:** Clear all trip data from InfluxDB.
 - **Financial Chart Creation:** Create financial charts using provided data.
@@ -16,42 +48,63 @@ This Streamlit application manages and analyzes vehicle operational data, includ
 - **Trip Efficiency Chart:** Create charts showing trip efficiency metrics.
 - **Expense Forecasting Chart:** Create charts showing expense forecasting.
 
-## Setup
+<p align="center">
+  <img src="images/financials.png" alt="Daily Expenses">
+</p>
 
-1. **Prerequisites:**
-   - Docker
-   - Docker Compose
-   - Python 3.9+
-   - `pip install -r requirements.txt` (or `conda install --file requirements.txt`)
+---
 
-2. **Environment Variables:** Create a `.env` file with the following variables:
-   - `POSTGRES_DB`: PostgreSQL database name (e.g., `bm125`)
-   - `POSTGRES_USER`: PostgreSQL username (e.g., `bm125`)
-   - `POSTGRES_PASSWORD`: PostgreSQL password (e.g., `bm125`)
-   - `POSTGRES_HOST`: PostgreSQL host (e.g., `host.docker.internal`)
-   - `POSTGRES_PORT`: PostgreSQL port (e.g., `5432`)
-   - `INFLUXDB_URL`: InfluxDB URL (e.g., `http://localhost:8086`)
-   - `INFLUXDB_TOKEN`: Your InfluxDB token
-   - `INFLUXDB_ORG`: Your InfluxDB organization
-   - `INFLUXDB_BUCKET`: Your InfluxDB bucket name (e.g., `bm125`)
+## 🚀 Quick Start
 
-3. **Run:**
-   - `docker compose up -d`
-   - Access the application at `http://localhost:8501`
+### Try the Live Demo
 
-## Usage
+Try RoadTrip Insights with our [**Live Demo**](https://demo.your_website.com/ui/login?auto). No installation required!
 
-- Enter daily income and expenses using the provided form.
-- Upload trip data using either a CSV or PDF file. CSV files should follow the specified header format.
-- Use the interactive charts and tables to analyze financial and trip data.
-- Use the "Clear Trip Data" button to clear all trip data from InfluxDB.
+### Get Started Locally in 5 Minutes
 
-## Notes
+#### Launch RoadTrip Insights in Docker
 
-- The PDF parsing functionality might require further refinement depending on the PDF's structure. CSV upload is generally more reliable.
-- Ensure that InfluxDB is running and accessible before starting the application.
+Make sure that Docker is running. Then, start RoadTrip Insights in a single command:
 
-## Recent Changes
+```bash
+docker run --pull=always --rm -it -p 8080:8080 --user=root \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v /tmp:/tmp your_username/RoadTrip-Insights:latest server local
+```
 
-- Added debug statements to `db_manager.py` to print connection parameters and SQL commands being executed.
-- Updated `visualization.py` to ensure the `data` parameter is always a DataFrame in the `create_daily_trip_mileage_chart` function.
+Access the RoadTrip Insights UI at [http://localhost:8080](http://localhost:8080) and start building your first flow!
+
+## 🌐 Join the Community
+
+Stay connected and get support:
+
+- **Slack:** Join our [Slack community](https://your_website.com/slack) to ask questions and share ideas.
+- **LinkedIn:** Follow us on [LinkedIn](https://www.linkedin.com/company/your_linkedin/) — next to Slack and GitHub, this is our main channel to share updates and product announcements.
+- **YouTube:** Subscribe to our [YouTube channel](https://www.youtube.com/@your_youtube) for educational video content. We publish new videos every week!
+- **X:** Follow us on [X](https://x.com/your_twitter) if you're still active there.
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions of all kinds!
+
+- **Report Issues:** Found a bug or have a feature request? Open an [issue on GitHub](https://github.com/your_username/RoadTrip-Insights/issues).
+- **Contribute Code:** Check out our [Contributor Guide](https://your_website.com/docs/getting-started/contributing) for initial guidelines, and explore our [good first issues](https://go.your_website.com/contribute) for beginner-friendly tasks to tackle first.
+- **Contribute to our Docs:** Contribute edits or updates to keep our [documentation](https://github.com/your_username/docs) top-notch.
+
+---
+
+## 📄 License
+
+RoadTrip Insights is licensed under the Apache 2.0 License © [RoadTrip Insights Technologies](https://your_website.com).
+
+---
+
+## ⭐️ Stay Updated
+
+Give our repository a star to stay informed about the latest features and updates!
+
+[![Star the Repo](https://your_website.com/star.gif)](https://github.com/your_username/RoadTrip-Insights)
+
+---
