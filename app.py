@@ -6,22 +6,17 @@ from visualization import create_financial_chart, create_trip_timeline, create_t
 import datetime
 from session import authenticate_user, has_permission
 
-# Initialize the database manager
 db_manager = DBManager()
 
-# Authenticate user
 st.session_state["authenticated"], st.session_state["role"] = authenticate_user()
 
 if not st.session_state.get("authenticated", False):
     st.error("Authentication failed. Please try again.")
 else:
-    # Set the title of the Streamlit application
     st.title("RoadTrip Insights")
 
-    # Create tabs for different sections
     tabs = st.tabs(["Cashflow Tracking", "GPS Reporting", "Analysis", "Management"])
 
-    # Section for Daily Income and Expense Management
     with tabs[0]:
         if has_permission(st.session_state.get("role", "user"), "Cashflow Tracking"):
             st.header("Daily Income and Expenses")
@@ -30,7 +25,6 @@ else:
             category = st.selectbox("Category", ["Revenue", "Fuel costs", "Repair costs", "Spare parts costs", "Maintenance", "Tolls", "Driver Allowance", "Insurance", "Permits"])
             amount = st.number_input("Amount", min_value=0, step=100, format="%d")
 
-            # Button to add an entry to the database
             if st.button("Add Entry"):
                 if date and vehicle and category and amount:
                     db_manager.insert_daily_data(date.strftime("%Y-%m-%d"), vehicle, category, amount)
@@ -38,31 +32,26 @@ else:
                 else:
                     st.error("Please fill all fields.")
 
-            # Retrieve and display daily financial data
             daily_data = db_manager.get_daily_data()
             if daily_data:
                 fig = create_financial_chart(daily_data)
                 st.plotly_chart(fig)
 
-                # Button to export the financial report as an image
                 if st.button("Export Financial Report as Image"):
                     fig.write_image("financial_report.png")
                     st.success("Financial report exported as image successfully!")
         else:
             st.error("You do not have permission to access this section.")
 
-    # Section for Trip Data Handling
     with tabs[1]:
         if has_permission(st.session_state.get("role", "user"), "GPS Reporting"):
             st.header("Trip Data Upload")
             file_type = st.radio("Choose file type", ["CSV", "PDF"], index=0)
             uploaded_file = st.file_uploader("Choose a file", type=["pdf", "csv"])
 
-            # Display expected CSV headers if CSV is selected
             if file_type == "CSV":
                 st.markdown("**Expected CSV Header Titles:** Vehicle Plate Number, Trip State, Start Time, End Time, Mileage (km), Duration, Start Location, End Location")
 
-            # Handle file upload and data extraction
             if uploaded_file is not None:
                 try:
                     with open("temp_file", "wb") as f:
@@ -88,7 +77,6 @@ else:
                             else:
                                 st.error("Could not generate trip timeline. Check file format.")
                         else:
-                            # Display specific error message for missing columns
                             if "Error: CSV file is missing required columns:" in str(trip_data):
                                 st.error(str(trip_data))
                             else:
@@ -98,7 +86,6 @@ else:
         else:
             st.error("You do not have permission to access this section.")
 
-    # Section for Trip Data Analysis
     with tabs[2]:
         if has_permission(st.session_state.get("role", "user"), "Analysis"):
             st.header("Trip Data Analysis")
@@ -112,15 +99,12 @@ else:
         else:
             st.error("You do not have permission to access this section.")
 
-    # Section for Data Analysis
     with tabs[2]:
         if has_permission(st.session_state.get("role", "user"), "Analysis"):
             st.header("Data Analysis")
 
-            # Create a layout with two columns for charts
             col1, col2 = st.columns(2)
 
-            # Expense vs Revenue Analysis
             with col1:
                 st.subheader("Expense vs Revenue Analysis")
                 expense_vs_revenue_data = db_manager.get_daily_data()
@@ -128,7 +112,6 @@ else:
                     fig = create_expense_vs_revenue_chart(expense_vs_revenue_data)
                     st.plotly_chart(fig)
 
-            # Trip Efficiency Metrics
             with col2:
                 st.subheader("Trip Efficiency Metrics")
                 trip_efficiency_data = db_manager.get_daily_trip_data()
@@ -136,7 +119,6 @@ else:
                     fig = create_trip_efficiency_chart(trip_efficiency_data)
                     st.plotly_chart(fig)
 
-            # Expense Forecasting
             st.subheader("Expense Forecasting")
             expense_forecast_data = db_manager.get_daily_data()
             if expense_forecast_data:
@@ -145,7 +127,6 @@ else:
         else:
             st.error("You do not have permission to access this section.")
 
-    # Section for Vehicle Management
     with tabs[3]:
         if has_permission(st.session_state.get("role", "user"), "Management"):
             st.header("Vehicle Management")
@@ -188,5 +169,4 @@ else:
     else:
         st.sidebar.error("You do not have permission to access this section.")
 
-# Close the InfluxDB connection
 db_manager.close_influx_connection()
