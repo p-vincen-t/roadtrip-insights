@@ -6,7 +6,6 @@ from dotenv import load_dotenv
 from influxdb_client import InfluxDBClient, Point
 from influxdb_client.client.write_api import SYNCHRONOUS
 
-# Load environment variables from .env file
 load_dotenv()
 
 class DBManager:
@@ -23,7 +22,6 @@ class DBManager:
         self.create_tables()
 
     def create_conn(self):
-        # Provide the correct host name and port for your PostgreSQL server
         conn_params = {
             'dbname': self.db_name,
             'user': self.db_user,
@@ -35,17 +33,14 @@ class DBManager:
         print(f"Connecting to database with params: {conn_params}")
 
         try:
-            # Create a connection to the database
             conn = psycopg2.connect(**conn_params)
             return conn
         except Exception as e:
-            # Handle any exceptions that occur during the connection process
             print(f"An error occurred: {e}")
             return None
 
     def create_tables(self):
         try:
-            # Create the tables
             commands = (
                 """
                 CREATE TABLE IF NOT EXISTS vehicles (
