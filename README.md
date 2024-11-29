@@ -1,9 +1,3 @@
-<!-- <p align="center">
-  <a href="https://www.kestra.io">
-    <img src="images/logo.png" alt="RoadTrip Insights Logo" />
-  </a>
-</p> -->
-
 <h1 align="center" style="border-bottom: none">
     RoadTrip Insights - Vehicle Operational Data Management Application
 </h1>
