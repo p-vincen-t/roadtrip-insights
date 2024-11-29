@@ -1,0 +1,14 @@
+{
+  "name": "bm125-streamlit",
+  "version": "1.0.0",
+  "description": "This Streamlit application manages and analyzes vehicle operational data, including daily income/expenses and trip details.",
+  "main": "index.js",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "dev": "streamlit run app.py"
+  },
+  "author": "",
+  "license": "ISC"
+}

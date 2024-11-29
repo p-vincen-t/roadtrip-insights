@@ -4,21 +4,10 @@ from db_manager import DBManager
 from pdf_parser import extract_trip_data
 from visualization import create_financial_chart, create_trip_timeline, create_trip_summary, create_daily_trip_mileage_chart, create_expense_vs_revenue_chart, create_trip_efficiency_chart, create_expense_forecast_chart
 import datetime
-from session import authenticate_user
+from session import authenticate_user, has_permission
 
 # Initialize the database manager
 db_manager = DBManager()
-
-# Define roles and permissions
-roles_permissions = {
-    "admin": ["Cashflow Tracking", "GPS Reporting", "Analysis", "Management", "Reset"],
-    "manager": ["Cashflow Tracking", "GPS Reporting", "Analysis"],
-    "user": ["Cashflow Tracking", "GPS Reporting"]
-}
-
-# Function to check permissions
-def has_permission(role, section):
-    return section in roles_permissions.get(role, [])
 
 # Authenticate user
 st.session_state["authenticated"], st.session_state["role"] = authenticate_user()

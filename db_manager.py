@@ -23,46 +23,73 @@ class DBManager:
         self.create_tables()
 
     def create_conn(self):
-        conn = psycopg2.connect(
-            dbname=self.db_name,
-            user=self.db_user,
-            password=self.db_password,
-            host=self.db_host,
-            port=self.db_port
-        )
-        return conn
+        # Provide the correct host name and port for your PostgreSQL server
+        conn_params = {
+            'dbname': self.db_name,
+            'user': self.db_user,
+            'password': self.db_password,
+            'host': self.db_host,
+            'port': self.db_port
+        }
+
+        print(f"Connecting to database with params: {conn_params}")
+
+        try:
+            # Create a connection to the database
+            conn = psycopg2.connect(**conn_params)
+            return conn
+        except Exception as e:
+            # Handle any exceptions that occur during the connection process
+            print(f"An error occurred: {e}")
+            return None
 
     def create_tables(self):
-        commands = (
-            """
-            CREATE TABLE IF NOT EXISTS vehicles (
-                id SERIAL PRIMARY KEY,
-                plate_number VARCHAR(255) NOT NULL,
-                model VARCHAR(255) NOT NULL
+        try:
+            # Create the tables
+            commands = (
+                """
+                CREATE TABLE IF NOT EXISTS vehicles (
+                    id SERIAL PRIMARY KEY,
+                    plate_number VARCHAR(255) NOT NULL,
+                    model VARCHAR(255) NOT NULL
+                )
+                """,
+                """
+                CREATE TABLE IF NOT EXISTS daily_data (
+                    id SERIAL PRIMARY KEY,
+                    date DATE NOT NULL,
+                    vehicle VARCHAR(255) NOT NULL,
+                    category VARCHAR(255) NOT NULL,
+                    amount REAL NOT NULL
+                )
+                """
             )
-            """,
-            """
-            CREATE TABLE IF NOT EXISTS daily_data (
-                id SERIAL PRIMARY KEY,
-                date DATE NOT NULL,
-                vehicle VARCHAR(255) NOT NULL,
-                category VARCHAR(255) NOT NULL,
-                amount REAL NOT NULL
-            )
-            """
-        )
-        conn = self.create_conn()
-        cur = conn.cursor()
-        for command in commands:
-            cur.execute(command)
-        conn.commit()
-        cur.close()
-        conn.close()
+
+            conn = self.create_conn()
+            if conn is None:
+                print("Failed to connect to the database")
+                return
+
+            cur = conn.cursor()
+
+            for command in commands:
+                print(f"Executing command: {command}")
+                cur.execute(command)
+
+            conn.commit()
+            cur.close()
+            conn.close()
+        except psycopg2.Error as e:
+            print(f"An error occurred: {e}")
 
     def insert_daily_data(self, date, vehicle, category, amount):
         sql = """INSERT INTO daily_data (date, vehicle, category, amount)
                  VALUES (%s, %s, %s, %s)"""
         conn = self.create_conn()
+        if conn is None:
+            print("Failed to connect to the database")
+            return
+
         cur = conn.cursor()
         cur.execute(sql, (date, vehicle, category, amount))
         conn.commit()
@@ -71,6 +98,10 @@ class DBManager:
 
     def get_daily_data(self):
         conn = self.create_conn()
+        if conn is None:
+            print("Failed to connect to the database")
+            return
+
         cur = conn.cursor()
         cur.execute("SELECT * FROM daily_data")
         rows = cur.fetchall()
@@ -90,6 +121,10 @@ class DBManager:
         sql = """INSERT INTO vehicles (plate_number, model)
                  VALUES (%s, %s)"""
         conn = self.create_conn()
+        if conn is None:
+            print("Failed to connect to the database")
+            return
+
         cur = conn.cursor()
         cur.execute(sql, (plate, model))
         conn.commit()
@@ -98,6 +133,10 @@ class DBManager:
 
     def list_vehicles(self):
         conn = self.create_conn()
+        if conn is None:
+            print("Failed to connect to the database")
+            return
+
         cur = conn.cursor()
         cur.execute("SELECT * FROM vehicles")
         rows = cur.fetchall()
@@ -124,6 +163,10 @@ class DBManager:
 
     def clear_sqlite_data(self):
         conn = self.create_conn()
+        if conn is None:
+            print("Failed to connect to the database")
+            return
+
         cur = conn.cursor()
         cur.execute("DELETE FROM daily_data")
         conn.commit()

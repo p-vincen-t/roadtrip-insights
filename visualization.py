@@ -143,10 +143,13 @@ def create_daily_trip_mileage_chart(data=None):
     Returns:
     - fig: A Plotly figure object.
     """
-    if data is None or data.empty:
+    if data is None:
         data = pd.DataFrame(sample_data["trip_data"])
 
-    if data is None or data.empty:
+    if not isinstance(data, pd.DataFrame):
+        data = pd.DataFrame(data)
+
+    if data.empty:
         return None
 
     # Ensure the data is in the correct format
@@ -187,7 +190,7 @@ def create_daily_trip_mileage_chart(data=None):
 
 def create_expense_vs_revenue_chart(data=None):
     """
-    Create a chart showing expense vs. revenue over different timeframes.
+    Create a chart showing expense vs. revenue over different timestamps.
 
     Parameters:
     - data (list): A list of tuples containing date, vehicle, category, and amount.
